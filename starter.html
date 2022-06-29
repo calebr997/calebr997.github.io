@@ -1,0 +1,128 @@
+<html>
+    <!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+        
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="heading">
+              <a class="navbar-brand" href="#"></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                  </li>
+                  
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" href="pages/projects.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Projects
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="starter.html">PacMen</a></li>
+                      <li><a class="dropdown-item" href="bigEyes.html.html">Eyes</a></li>
+                      <li><a class="dropdown-item" href="Realtimebus.html" target="_blank">Real Time Bus Tracker</a></li>
+                    </ul>
+                  </li>
+                  
+                </ul>
+               
+              </div>
+            </div>
+          </nav>
+         <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script> 
+
+
+  </div>
+
+
+<SCRIPT>
+    var pos = 0;
+    const pacArray = [
+        ['PacMan1.png', 'PacMan2.png'],
+        ['PacMan3.png', 'PacMan4.png']
+    ];
+    var direction = 0;
+    const pacMen = []; // This array holds all the pacmen
+
+    function setToRandom(scale) {
+        return {
+            x: Math.random() * scale,
+            y: Math.random() * scale
+        }
+    }
+    // Factory to make a PacMan at a random position with random velocity
+    function makePac() {
+        // returns an object with random values scaled {x: 33, y: 21}
+        let velocity = setToRandom(10); // {x:?, y:?}
+        let position = setToRandom(200);
+        // Add image to div id = game
+        let game = document.getElementById('game');
+        let newimg = document.createElement('img');
+        newimg.style.position = 'absolute';
+        newimg.src = 'PacMan1.png';
+        newimg.width = 100;
+        newimg.style.left = position.x;
+        newimg.style.top = position.y;
+
+        //
+        // set position here 
+        //
+
+        // add new Child image to game
+        game.appendChild(newimg);
+        // return details in an object
+        return {
+            position,
+            velocity,
+            newimg
+        }
+    }
+
+    function update() {
+        //loop over pacmen array and move each one and move image in DOM
+        pacMen.forEach((item) => {
+            checkCollisions(item)
+            item.position.x += item.velocity.x;
+            item.position.y += item.velocity.y;
+
+            item.newimg.style.left = item.position.x;
+            item.newimg.style.top = item.position.y;
+        })
+        setTimeout(update, 20);
+    }
+
+    function checkCollisions(item) {
+        if (item.position.x + item.velocity.x + item.newimg.width > window.innerWidth ||
+            item.position.x + item.velocity.x < 0) item.velocity.x = -item.velocity.x;
+        if (item.position.y + item.velocity.y + item.newimg.height > window.innerHeight ||
+            item.position.y + item.velocity.y < 0) item.velocity.y = -item.velocity.y;
+        //
+        // detect collision with all walls and make pacman bounce
+        //
+    }
+
+    function makeOne() {
+        pacMen.push(makePac()); // add a new PacMan
+    }
+</SCRIPT>
+
+<body style="background-color:#1b03a3 ">
+    
+    <div id='game'>
+        <button onclick='makeOne()' width='200' height='30'>Add PacMan</button>
+        <button onclick='update()' width='200' height='30'>Start Game</button>
+        
+
+    </div>
+</body>
+
+</html>
